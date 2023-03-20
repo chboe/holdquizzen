@@ -124,7 +124,7 @@ files = get_xslx_files()
 raw_frame, error, error_msg = load_xslx_as_pandas(files)
 if error:
     msg = "\n".join(error_msg)
-    messagebox.showerror(title='Fejl', message=msg)
+    messagebox.showerror(title='Fejl', message=msg+'\nPrøv at lukke excel-filerne!')
 else:
     sanitized_frame, error, error_msg = raise_duplicate_errors(raw_frame)
     if error:

@@ -1,0 +1,8 @@
+1.  Træk HoldQuiz.exe hen i mappen med excel filerne.
+    Excel filerne skal være i navneformatet "Stilling-VÆRTSHUSNAVN.xlsx"
+    og være samme opsætning som test-filerne "Stilling-Test1.xslx" og "Stilling-Test2.xslx"
+
+2. Dobbeltklik på HoldQuiz.exe, Overall Top 10 og hvert værtshus top 5 burde nu være i "Resultater.xlsx"
+
+Note: Afhængig af PC, kan programmet have problemer med at læse excel-filerne, hvis de er åbne. Hvis "Resultater.xlsx" bliver genereret
+er der ikke sket noget problem, ellers luk excel-filerne og prøv igen.

@@ -1,9 +1,6 @@
 from tkinter import messagebox
 from os import listdir
-from os.path import isfile, join
 import pandas
-from IPython.display import display
-import functools
 import numpy as np
 
 PLAY_MONTHS = ['Januar', 'Februar', 'Marts', 'April', 'Maj', 'Juni', 'Juli', 'August', 'Oktober', 'November']

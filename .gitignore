@@ -7,3 +7,4 @@ test.ico
 main.exe
 Pipfile
 Pipfile.lock
+*.xlsx

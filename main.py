@@ -48,13 +48,16 @@ def find_qualifiers(df):
     overall_top_teams = find_top_10_teams(df, team_names)
     taken = overall_top_teams['Holdnavn'].tolist()
     bar_totals = find_bar_totals(df, team_names, taken)
-    with pandas.ExcelWriter('./Resultater.xlsx') as writer:
-        overall_top_teams.index = np.arange(1, len(overall_top_teams) + 1)
-        overall_top_teams.to_excel(writer, sheet_name="Top hold")
-        for tuple in bar_totals:
-            bar_name, bar_scores, bar_index = tuple[0], tuple[1], tuple[2]
-            bar_scores.index = np.arange(1, len(bar_scores) + 1)
-            bar_scores.to_excel(writer, sheet_name=bar_name)
+    try:
+        with pandas.ExcelWriter('./Resultater.xlsx') as writer:
+            overall_top_teams.index = np.arange(1, len(overall_top_teams) + 1)
+            overall_top_teams.to_excel(writer, sheet_name="Top hold")
+            for tuple in bar_totals:
+                bar_name, bar_scores, bar_index = tuple[0], tuple[1], tuple[2]
+                bar_scores.index = np.arange(1, len(bar_scores) + 1)
+                bar_scores.to_excel(writer, sheet_name=bar_name)
+    except IOError as e:
+        messagebox.showerror(title='Fejl', message='Luk "Resultater.xlsx" før du forsøger at generere resultaterne!')
 
 def find_top_10_teams(df, team_names):
     top_df = pandas.DataFrame([], columns=["Holdnavn", "Total", "Fejl", "Højeste Score", "Antal Deltagelser"])

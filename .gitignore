@@ -4,3 +4,6 @@ main.spec
 HoldQuizzen.exe
 Resultater.xlsx
 test.ico
+main.exe
+Pipfile
+Pipfile.lock

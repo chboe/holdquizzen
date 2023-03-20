@@ -57,11 +57,18 @@ def find_qualifiers(df):
             bar_scores.to_excel(writer, sheet_name=bar_name)
 
 def find_top_10_teams(df, team_names):
-    top_df = pandas.DataFrame([], columns=["Holdnavn", "Total", "Fejl"])
+    top_df = pandas.DataFrame([], columns=["Holdnavn", "Total", "Fejl", "Højeste Score", "Antal Deltagelser"])
     for team_name in team_names:
         team_score_df = df.loc[df['Holdnavn'] == team_name]
         team_score = team_score_df['Point'].sum()
-        top_df.loc[len(top_df.index)] = [team_name, team_score, ""]
+        if len(team_score_df['Point'].index) > 0:
+            max_score = team_score_df[team_score_df['Point'] == team_score_df['Point'].max()]['Point'].values.tolist()[0]
+        else:
+            max_score = 0
+        participations = len(team_score_df.index)
+        top_df.loc[len(top_df.index)] = [team_name, team_score, "", max_score, participations]
+    top_df = top_df.sort_values(by=['Antal Deltagelser'], ascending=False, ignore_index=True)
+    top_df = top_df.sort_values(by=['Højeste Score'], ascending=False, ignore_index=True)
     top_df = top_df.sort_values(by=['Total'], ascending=False, ignore_index=True)
     top_df, index = resolve_equal_score_error(top_df, 'Total', 9)
     return top_df.head(index)
@@ -101,17 +108,24 @@ def resolve_multi_qualified_teams(res):
     return new_res
 
 def find_bar_totals(df, team_names, taken):
-    total_bar_team_points = pandas.DataFrame([], columns=["Holdnavn", "Værtshus", "Værtshus Total", "Fejl"])
+    total_bar_team_points = pandas.DataFrame([], columns=["Holdnavn", "Værtshus", "Værtshus Total", "Fejl", "Højeste Score", "Antal Deltagelser"])
     bar_names = df["Værtshus"].unique()
     eligible_teams = list(filter(lambda x: not x in taken, team_names))
     for bar_name in bar_names:
         for team_name in eligible_teams:
             bar_team_points = df.loc[(df['Holdnavn'] == team_name) & (df['Værtshus'] == bar_name)]
             points = bar_team_points['Point'].sum()
-            total_bar_team_points.loc[len(total_bar_team_points.index)] = [team_name, bar_name, points, '']
+            if len(bar_team_points['Point'].index) > 0:
+                max_score = bar_team_points[bar_team_points['Point'] == bar_team_points['Point'].max()]['Point'].values.tolist()[0]
+            else:
+                max_score = 0
+            participations = len(bar_team_points.index)
+            total_bar_team_points.loc[len(total_bar_team_points.index)] = [team_name, bar_name, points, '', max_score, participations]
     res = []
     for bar_name in bar_names:
         bar_df = total_bar_team_points.loc[total_bar_team_points['Værtshus'] == bar_name]
+        bar_df = bar_df.sort_values(by=['Antal Deltagelser'], ascending=False, ignore_index=True)
+        bar_df = bar_df.sort_values(by=['Højeste Score'], ascending=False, ignore_index=True)
         bar_df = bar_df.sort_values(by=['Værtshus Total'], ascending=False, ignore_index=True).drop(columns='Værtshus')
         bar_df, index = resolve_equal_score_error(bar_df, 'Værtshus Total', 4)
         res.append([bar_name, bar_df, index])

@@ -23,7 +23,7 @@ def load_xslx_as_pandas(files):
         bar_name = file.replace('./Stilling-', '').replace('.xlsx', '')
         try:
             with open(file, 'rb') as f:
-                sub_frame = pandas.read_excel(f)
+                sub_frame = pandas.read_excel(f, engine='openpyxl')
                 for index, row in sub_frame.iterrows():
                     for month in PLAY_MONTHS:
                         points = row[month]
@@ -121,6 +121,8 @@ def find_bar_totals(df, team_names, taken):
     return res
 
 files = get_xslx_files()
+if len(files) == 0:
+    messagebox.showerror(title='Fejl', message='Der blev ikke fundet nogle excel-filer i mappen!')
 raw_frame, error, error_msg = load_xslx_as_pandas(files)
 if error:
     msg = "\n".join(error_msg)

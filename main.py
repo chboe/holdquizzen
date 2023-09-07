@@ -5,7 +5,7 @@ from os import listdir
 import pandas
 import numpy as np
 
-PLAY_MONTHS = ['Januar', 'Februar', 'Marts', 'April', 'Maj', 'Juni', 'Juli', 'August', 'Oktober', 'November']
+PLAY_MONTHS = ['Januar', 'Februar', 'Marts', 'April', 'Maj', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November']
 
 
 def get_xslx_files():

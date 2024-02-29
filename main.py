@@ -26,10 +26,7 @@ def load_xslx_as_pandas(files):
         _, file_extension = os.path.splitext(file)
         try:
             with open(file, 'rb') as f:
-                if file_extension == '.xlsx':
-                    sub_frame = pandas.read_excel(f, engine='openpyxl')
-                elif file_extension == '.xls':
-                    sub_frame = pandas.read_excel(f, engine='xlrd')
+                sub_frame = pandas.read_excel(f, engine='openpyxl')
                 for index, row in sub_frame.iterrows():
                     winnings_frame.loc[len(winnings_frame.index)] = [row['Holdnavn'], bar_name, row['Samlet Gevinst']]
                     for month in PLAY_MONTHS:
@@ -102,7 +99,7 @@ def find_top_teams(points_frame, winnings_frame, team_names):
         participations = len(team_score_df.index)
         amount_visited_series = points_frame.loc[points_frame['Holdnavn'] == team_name]['Quizsted'].value_counts().sort_values(ascending=False)
         most_visited = amount_visited_series.where(amount_visited_series == amount_visited_series[0]).dropna().index.values.tolist()
-        average = round(max_score/max(participations, 1), 2)
+        average = round(team_score/max(participations, 1), 2)
         top_df.loc[len(top_df.index)] = [team_name, team_score, max_score, participations, average, " og ".join(most_visited), winnings_frame.loc[winnings_frame['Holdnavn'] == team_name]["Samlet Gevinst"].sum(), ""]
     top_df = top_df.sort_values(by=['Antal Deltagelser'], ascending=False, ignore_index=True)
     top_df = top_df.sort_values(by=['Højeste Score'], ascending=False, ignore_index=True)
